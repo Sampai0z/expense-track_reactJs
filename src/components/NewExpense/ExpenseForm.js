@@ -1,13 +1,12 @@
 import { useState } from "react";
 import "./ExpenseForm.css";
 
-function ExpenseForm (props) {
+function ExpenseForm(props) {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
 
-  
-/* 
+  /* 
 
 //THIS IS AN ALTERNATIVE, BUT USE THE INDIVIDUAL NOT WITH THE SPREAD OPERATOR.
 
@@ -39,15 +38,15 @@ const [userInput, setUserInput] = useState({
   const handleSubmit = (e) => {
     e.preventDefault();
     const expenseData = {
-      title:enteredTitle,
-      amount:enteredAmount,
-      date: new Date(enteredDate)
-    }
+      title: enteredTitle,
+      amount: +enteredAmount,
+      date: new Date(enteredDate),
+    };
 
     props.onSaveExpenseData(expenseData);
-    setEnteredTitle('');
-    setEnteredAmount('');
-    setEnteredDate('');
+    setEnteredTitle("");
+    setEnteredAmount("");
+    setEnteredDate("");
   };
 
   return (
@@ -55,7 +54,11 @@ const [userInput, setUserInput] = useState({
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>title</label>
-          <input type="text"  value={enteredTitle} onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -80,9 +83,10 @@ const [userInput, setUserInput] = useState({
       </div>
       <div className="new-expense__actions">
         <button type="submit">Add Expense</button>
+        <button type="button" onClick={props.onCancel}>Cancel</button>
       </div>
     </form>
   );
-};
+}
 
 export default ExpenseForm;
