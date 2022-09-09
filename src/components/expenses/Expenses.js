@@ -1,44 +1,72 @@
+import React, { useState } from "react";
 
-import {useState} from 'react'; 
+import "./Expenses.css";
+import ExpenseItem from "./ExpenseItem";
+import Card from "../UI/Card";
+import ExpensesFilter from "../Filter/ExpensesFilter";
 
-import './Expenses.css'
-import ExpenseItem from './ExpenseItem';
-import Card from '../UI/Card';
-import ExpensesFilter from '../Filter/ExpensesFilter';
+function Expenses(props) {
+  const [filteredYear, setfilteredYear] = useState("2020");
 
-function Expenses(props){
-
-const [changeYear, setChangeYear] = useState('2020');
-
-  const filterChangeHHandler = selectedYear => {
+  const filterChangeHandler = (selectedYear) => {
     // console.log('Expenses.js')
-    setChangeYear(selectedYear);
-  }
+    setfilteredYear(selectedYear);
+  };
 
-  return(
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  let expensesContent = <p>No expenses found :D</p>
+
+  if (filteredExpenses.length > 0) {
+    expensesContent = filteredExpenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          title={expense.title}
+          amount={expense.amount}
+          date={expense.date}
+        />
+      ))
+    };
+
+  return (
     <Card className="expenses">
-      <ExpensesFilter selected={changeYear} onChangeFilter={filterChangeHHandler}/>
+      <ExpensesFilter
+        // selected={filteredYear}
+        selected={filteredYear}
+        onChangeFilter={filterChangeHandler}
+      />
+  
+      {expensesContent}
 
-      <ExpenseItem
+      {/* {filteredExpenses.length === 0 && <p>No expenses Found.</p>}
+      {filteredExpenses.length > 0 && filteredExpenses.map((expense) => {
+          return (
+            <ExpenseItem
+              key={expense.id}
+              title={expense.title}
+              amount={expense.amount}
+              date={expense.date}
+            />
+          );
+        })} */}
+
+      {/* {props.items.map((expense) => { */}
+
+      {/* {props.items.map((expense) => (
+          <ExpenseItem
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        ))} */}
+
+      {/* <ExpenseItem
         title={props.items[0].title}
         amount={props.items[0].amount}
         date={props.items[0].date}
-      />
-      <ExpenseItem
-        title={props.items[1].title}
-        amount={props.items[1].amount}
-        date={props.items[1].date}
-      />
-      <ExpenseItem
-        title={props.items[2].title}
-        amount={props.items[2].amount}
-        date={props.items[2].date}
-      />
-      <ExpenseItem
-        title={props.items[3].title}
-        amount={props.items[3].amount}
-        date={props.items[3].date}
-      />
+      /> */}
     </Card>
   );
 }
